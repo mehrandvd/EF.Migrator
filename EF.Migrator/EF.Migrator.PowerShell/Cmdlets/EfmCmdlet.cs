@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Management.Automation;
@@ -10,7 +11,13 @@ namespace EF.Migrator.PowerShell.Cmdlets
     public class EfmCmdlet : PSCmdlet
     {
         [Parameter(Mandatory = true)]
-        string[] AssemblyNames { get; set; }
+        public string[] AssemblyNames { get; set; }
+
+        [Parameter]
+        public string ConnectionString { get; set; }
+
+        [Parameter]
+        public string ProviderName { get; set; }
 
         protected List<DbMigrator> GetMigrators()
         {
@@ -34,7 +41,15 @@ namespace EF.Migrator.PowerShell.Cmdlets
 
             foreach (var configType in configTypes)
             {
+                
                 var migrator = new DbMigrator((DbMigrationsConfiguration) Activator.CreateInstance(configType));
+
+                if (!string.IsNullOrWhiteSpace(ConnectionString))
+                {
+                    var providerName = !string.IsNullOrWhiteSpace(ProviderName) ? ProviderName : "System.Data.SqlClient";
+                    migrator.Configuration.TargetDatabase = new DbConnectionInfo(ConnectionString, providerName);
+                }
+
                 migrators.Add(migrator);
             }
             return migrators;
