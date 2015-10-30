@@ -1,6 +1,6 @@
 using System.Management.Automation;
 
-namespace EF.Migrator.PowerShell.Cmdlets
+namespace EntityFramework.Migrator.PowerShell.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "EfmPendingMigrations")]
     public class GetPendingMigrationsCmdletBase : EfmCmdletBase

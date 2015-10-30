@@ -5,7 +5,7 @@ using System.Linq;
 using System.Management.Automation;
 using System.Reflection;
 
-namespace EF.Migrator.PowerShell.Cmdlets
+namespace EntityFramework.Migrator.PowerShell.Cmdlets
 {
     public abstract class EfmCmdletBase : PSCmdlet
     {

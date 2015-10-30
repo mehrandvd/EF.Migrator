@@ -5,9 +5,9 @@ using System.Management.Automation;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EF.Migrator.PowerShell.Cmdlets
+namespace EntityFramework.Migrator.PowerShell.Cmdlets
 {
-    [Cmdlet(VerbsData.Update, "EfmDatabase")]
+    [Cmdlet(VerbsData.Update, "EfmDatabase", SupportsShouldProcess = true)]
     public class UpdateDatabaseCmdletBase : EfmCmdletBase
     {
         protected override void ProcessRecord()
@@ -18,7 +18,14 @@ namespace EF.Migrator.PowerShell.Cmdlets
 
             foreach (var dbMigrator in migrators)
             {
-                dbMigrator.Update();
+                WriteVerbose("Pending migrations: ");
+                foreach (var pendingMigration in dbMigrator.GetPendingMigrations())
+                {
+                    WriteVerbose(string.Format("\t-[{0}]", pendingMigration));
+                }
+
+                if (ShouldProcess("Applying migration on the target database."))
+                    dbMigrator.Update();
             }
         }
     }

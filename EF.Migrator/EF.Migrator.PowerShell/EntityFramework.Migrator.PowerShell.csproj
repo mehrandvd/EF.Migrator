@@ -7,8 +7,8 @@
     <ProjectGuid>{EFA77F81-BE19-4169-949B-B53630432CEF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EF.Migrator.PowerShell</RootNamespace>
-    <AssemblyName>EF.Migrator.PowerShell</AssemblyName>
+    <RootNamespace>EntityFramework.Migrator.PowerShell</RootNamespace>
+    <AssemblyName>EntityFramework.Migrator.PowerShell</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
