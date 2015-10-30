@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace EF.Migrator.PowerShell.Cmdlets
 {
     [Cmdlet(VerbsData.Update, "EfmDatabase")]
-    public class UpdateDatabaseCmdlet : EfmCmdlet
+    public class UpdateDatabaseCmdletBase : EfmCmdletBase
     {
         protected override void ProcessRecord()
         {

@@ -3,7 +3,7 @@ using System.Management.Automation;
 namespace EF.Migrator.PowerShell.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "EfmPendingMigrations")]
-    public class GetPendingMigrationsCmdlet : EfmCmdlet
+    public class GetPendingMigrationsCmdletBase : EfmCmdletBase
     {
         protected override void ProcessRecord()
         {

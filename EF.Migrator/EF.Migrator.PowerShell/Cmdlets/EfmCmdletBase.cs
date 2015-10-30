@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace EF.Migrator.PowerShell.Cmdlets
 {
-    public class EfmCmdlet : PSCmdlet
+    public abstract class EfmCmdletBase : PSCmdlet
     {
         [Parameter(Mandatory = true)]
         string[] AssemblyNames { get; set; }
@@ -30,14 +30,13 @@ namespace EF.Migrator.PowerShell.Cmdlets
                     assembly.GetTypes().Where(t => t.IsSubclassOf(typeof (DbMigrationsConfiguration)) && !t.IsAbstract).ToList());
             }
 
-            var migrators = new List<DbMigrator>();
-
-            foreach (var configType in configTypes)
-            {
-                var migrator = new DbMigrator((DbMigrationsConfiguration) Activator.CreateInstance(configType));
-                migrators.Add(migrator);
-            }
-            return migrators;
+            return configTypes
+                .Select
+                (
+                    configType => 
+                        new DbMigrator((DbMigrationsConfiguration) Activator.CreateInstance(configType))
+                )
+                .ToList();
         }
     }
 }
