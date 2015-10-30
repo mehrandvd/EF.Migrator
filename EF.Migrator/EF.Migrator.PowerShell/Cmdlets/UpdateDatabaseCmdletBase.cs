@@ -16,16 +16,25 @@ namespace EntityFramework.Migrator.PowerShell.Cmdlets
 
             var migrators = GetMigrators();
 
-            foreach (var dbMigrator in migrators)
+            foreach (var migrator in migrators)
             {
-                WriteVerbose("Pending migrations: ");
-                foreach (var pendingMigration in dbMigrator.GetPendingMigrations())
-                {
-                    WriteVerbose(string.Format("\t-[{0}]", pendingMigration));
-                }
+                WriteVerbose(string.Format("DbContext: {0}", migrator.Configuration.ContextKey));
 
-                if (ShouldProcess("Applying migration on the target database."))
-                    dbMigrator.Update();
+                foreach (var pendingChange in migrator.GetPendingMigrations())
+                {
+                    if (ShouldProcess(string.Format("Executing: [{0}]", pendingChange)))
+                    {
+                        try
+                        {
+                            migrator.Update(pendingChange);
+                            WriteVerbose(string.Format("\tDone."));
+                        }
+                        catch (Exception exception)
+            {
+                            WriteError(new ErrorRecord(exception, "UnableToUpdate", ErrorCategory.OperationStopped, pendingChange));
+                        }
+                    }
+                }
             }
         }
     }
